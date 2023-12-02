@@ -23,14 +23,6 @@ const SignUp: React.FC = () => {
       // Call the onSignUp function to register the user
       await onSignUp(username, password, accountType);
 
-      // Save user information in localStorage
-      // const user = {
-      //   username,
-      //   password,
-      //   accountType,
-      // };
-      // localStorage.setItem('user', JSON.stringify(user));
-
       // Redirect or perform other actions upon successful sign-up
       navigate('/home');
       console.log('User successfully registered!');
@@ -71,7 +63,6 @@ const SignUp: React.FC = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        {/* Your password visibility toggle code goes here */}
         <div id="passwordHelpBlock" className="form-text">
           Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
         </div>
