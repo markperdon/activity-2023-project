@@ -68,7 +68,7 @@ const AddUser: React.FC<AddUserProps> = ({ show, handleClose, getUsers, branchId
    return (
     <BootstrapModal show={show} onHide={handleClose}>
       <BootstrapModal.Header closeButton>
-        <BootstrapModal.Title><i className='bi bi-person'></i> {branchId === 'null' ? 'Edit Your Info' : 'Add New User' } </BootstrapModal.Title>
+        <BootstrapModal.Title><i className='bi bi-person'></i> {branchId === '' ? 'Edit Your Info' : 'Add New User' } </BootstrapModal.Title>
       </BootstrapModal.Header>
       <BootstrapModal.Body>
       <>  <div className="row g-3 align-items-center">
