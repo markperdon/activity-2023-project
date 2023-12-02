@@ -32,7 +32,7 @@ const AddUser: React.FC<AddUserProps> = ({ show, handleClose, getUsers, branchId
       }
       try {
         // Call the onSignUp function to register the user
-        if(branchId === 'null'){
+        if(branchId === ''){
           await axios.put(`http://localhost:5000/updateUser/${userId}`, { branchID });
           localStorage.setItem('branchId', branchID);
         }else{
