@@ -119,7 +119,9 @@ const SignUp: React.FC = () => {
         </div>
       </div>
       <div id="passwordHelpBlock" className="form-text">
-          Your password must be 8-20 characters long {passLong &&  <i className="bi bi-check-circle text-success"></i>}, contain letters and numbers {passHasNumber &&  <i className="bi bi-check-circle text-success"></i>}, and has at one special characters. {passHasSymbol &&  <i className="bi bi-check-circle text-success"></i>}
+          Your password must be 8-20 characters long {passLong &&  <i className="bi bi-check-circle text-success"></i>},
+          contain letters and numbers {passHasNumber &&  <i className="bi bi-check-circle text-success"></i>},
+          and at least one special characters. {passHasSymbol &&  <i className="bi bi-check-circle text-success"></i>}
       </div>
 
       <Button className="form-control btn btn-primary sign-up" onClick={handleSignUp} disabled={!continueSignUp}>

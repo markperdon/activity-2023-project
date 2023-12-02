@@ -141,7 +141,8 @@ const AddUser: React.FC<AddUserProps> = ({ show, handleClose, getUsers, branchId
             </span>
             </div>
             <div id="passwordHelpBlock" className="form-text">
-                Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
+                Your password must be 8-20 characters long, contain letters and numbers,
+                and at least one special characters.
             </div>
         </div>
         </>
