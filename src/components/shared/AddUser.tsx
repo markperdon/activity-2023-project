@@ -13,6 +13,7 @@ interface AddUserProps extends ModalProps {
 const AddUser: React.FC<AddUserProps> = ({ show, handleClose, getUsers }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [branchID, setBranchID] = useState('');
     const [passHasNumber, setPassHasNumber] = useState(false);
     const [passHasSymbol, setPassHasSymbol] = useState(false);
     const [continueSignUp, setContinueSignUp] = useState(false);
@@ -93,9 +94,9 @@ const AddUser: React.FC<AddUserProps> = ({ show, handleClose, getUsers }) => {
               type="text"
               id="username"
               className="form-control"
-              value={username}
+              value={branchID}
               placeholder='Branch ID'
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => setBranchID(e.target.value)}
               autoFocus
             />
             <span className="input-group-text">
