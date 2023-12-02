@@ -64,7 +64,18 @@ code {
 .App-link {
   color: #61dafb;
 }
-
+.show-pass {
+  cursor: pointer;
+}
+.navbar {
+  padding: 0px 20px !important;
+}
+.show-pass:hover {
+  cursor: pointer;
+  .bi {
+    color: green;
+  }
+}
 .registration-cont, .login-cont {
   max-width: 500px;
   border: solid 1px #ccc;

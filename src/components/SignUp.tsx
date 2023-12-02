@@ -1,9 +1,10 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { hasNumber, hasSymbol, isPassLong } from './shared/global';
 import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { useNavigate  } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { onSignUp } from '../api/auth';
-import '../css/App.css'
+import '../css/App.css';
 
 
 const SignUp: React.FC = () => {
@@ -14,6 +15,7 @@ const SignUp: React.FC = () => {
   const [passHasSymbol, setPassHasSymbol] = useState(false);
   const [continueSignUp, setContinueSignUp] = useState(false);
   const [passLong, setPassLong] = useState(false);
+  const [showPass, setShowPass] = useState(false);
   const [accountType, setAccountType] = useState('');
   const [message, setMessage] = useState('');
 
@@ -21,6 +23,9 @@ const SignUp: React.FC = () => {
     // Validate the form data
     if (!username || !password || !accountType) {
       setMessage('Please fill in all fields');
+      setTimeout(() => {
+        setMessage('');
+      },2000);
       return;
     }
 
@@ -45,22 +50,9 @@ const SignUp: React.FC = () => {
     setPassLong(isPassLong(password))
   }, [password])
 
-  const hasNumber = (str: string) => {
-    return /^.*[0-9].*$/.test(str);
-  };
-
-  const hasSymbol = (str: string) => {
-    return /^.*([-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]+).*$/.test(str);
-  };
-
-  const isPassLong = (str: string) => {
-    return /^[A-Za-z]*(?=.*[-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|])(?=.*[0-9]).{8,}$/.test(
-      str
-    );
-  };
   const setPass = (pass: string) => {
     setPassword(pass);
-    if(passHasNumber && passHasNumber && passLong){
+    if(passHasNumber && passHasSymbol && passLong){
       setContinueSignUp(true);
     }
   }
@@ -71,6 +63,20 @@ const SignUp: React.FC = () => {
       {message && <div className={`alert alert-${message == "Success!" ? 'success' : 'warning'}`} role="alert">
         {message}
       </div>}
+      <div className="row g-3 align-items-center">
+      <select
+        id="accountType"
+        className="form-control"
+        value={accountType}
+        onChange={(e) => setAccountType(e.target.value)}
+      >
+        <option value="" hidden>
+          Select Account Type
+        </option>
+        <option value="viewer">Viewer</option>
+        <option value="admin">Admin</option>
+      </select>
+    </div>
 
       <div className="row g-3 align-items-center">
         <div className="col-auto">
@@ -78,6 +84,7 @@ const SignUp: React.FC = () => {
             Username:
           </label>
         </div>
+        <div className="input-group mb-3">
         <input
           type="text"
           id="username"
@@ -86,6 +93,10 @@ const SignUp: React.FC = () => {
           onChange={(e) => setUsername(e.target.value)}
           autoFocus
         />
+        <span className="input-group-text">
+          <i className="bi bi-person"></i>
+        </span>
+        </div>
       </div>
       <div className="row g-3 align-items-center">
         <div className="col-auto">
@@ -93,32 +104,19 @@ const SignUp: React.FC = () => {
             Password:
           </label>
         </div>
+        <div className="input-group mb-3">
         <input
-          type="password"
+          type={showPass ? 'password' : 'text'}
           id="password"
           className="form-control"
           value={password}
           onChange={(e) => setPass(e.target.value)}
         />
-      </div>
-      <div className="row g-3 align-items-center">
-        <div className="col-auto">
-          <label className="col-form-label" htmlFor="accountType">
-            Account Type:
-          </label>
+        <span className="input-group-text show-pass" title='show password'
+          onClick={() => setShowPass(showPass ? false : true)}>
+          <i className={`bi ${showPass ? 'bi-eye-slash' : 'bi-eye'}`}></i>
+        </span>
         </div>
-        <select
-          id="accountType"
-          className="form-control"
-          value={accountType}
-          onChange={(e) => setAccountType(e.target.value)}
-        >
-          <option value="" hidden>
-            Select Account Type
-          </option>
-          <option value="viewer">Viewer</option>
-          <option value="admin">Admin</option>
-        </select>
       </div>
       <div id="passwordHelpBlock" className="form-text">
           Your password must be 8-20 characters long {passLong &&  <i className="bi bi-check-circle text-success"></i>}, contain letters and numbers {passHasNumber &&  <i className="bi bi-check-circle text-success"></i>}, and has at one special characters. {passHasSymbol &&  <i className="bi bi-check-circle text-success"></i>}

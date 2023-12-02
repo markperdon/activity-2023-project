@@ -1,8 +1,9 @@
 // src/components/MyModal.js
-import React, {useState} from 'react';
-import BootstrapModal, { ModalProps } from 'react-bootstrap/Modal';
+import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
+import BootstrapModal, { ModalProps } from 'react-bootstrap/Modal';
 import { onSignUp } from '../../api/auth';
+import { hasNumber, hasSymbol, isPassLong } from './global';
 
 interface AddUserProps extends ModalProps {
     show: boolean;
@@ -12,12 +13,21 @@ interface AddUserProps extends ModalProps {
 const AddUser: React.FC<AddUserProps> = ({ show, handleClose, getUsers }) => {
     // const [handleClear, sethandleClear] = useState(false);
     const [username, setUsername] = useState('');
-    const [accountType, setAccountType] = useState('');
     const [password, setPassword] = useState('');
-    const handleSignUp = async () => {
+    const [passHasNumber, setPassHasNumber] = useState(false);
+    const [passHasSymbol, setPassHasSymbol] = useState(false);
+    const [continueSignUp, setContinueSignUp] = useState(false);
+    const [passLong, setPassLong] = useState(false);
+    const [showPass, setShowPass] = useState(false);
+    const [accountType, setAccountType] = useState('');
+    const [message, setMessage] = useState('');
+      const handleSignUp = async () => {
       // Validate the form data
       if (!username || !password || !accountType) {
-        alert('Please fill in all fields');
+        setMessage('Please fill in all fields');
+        setTimeout(() => {
+          setMessage('');
+        },1500);
         return;
       }
 
@@ -33,10 +43,22 @@ const AddUser: React.FC<AddUserProps> = ({ show, handleClose, getUsers }) => {
         console.error('Error during registration:', error);
       }
     };
+    useEffect(() => {
+      setPassHasNumber(hasNumber(password))
+      setPassHasSymbol(hasSymbol(password))
+      setPassLong(isPassLong(password))
+    }, [password])
+
+    const setPass = (pass: string) => {
+      setPassword(pass);
+      if(passHasNumber && passHasSymbol && passLong){
+        setContinueSignUp(true);
+      }
+    }
     const handleClear = () => {
-      setUsername('');
-      setPassword('');
-      setAccountType('');
+    setUsername('');
+    setPassword('');
+    setAccountType('');
     }
 
    return (
@@ -45,31 +67,13 @@ const AddUser: React.FC<AddUserProps> = ({ show, handleClose, getUsers }) => {
         <BootstrapModal.Title><i className='bi bi-person'></i> Add New User </BootstrapModal.Title>
       </BootstrapModal.Header>
       <BootstrapModal.Body>
-      <><div className="row g-3 align-items-center">
-            <input
-                type="text"
-                id="username"
-                className="form-control"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder='Username'
-                autoFocus />
-                </div><div className="row g-3 align-items-center">
-                <div className="col-auto">
-                </div>
-                <input
-                    type="password"
-                    id="password"
-                    className="form-control"
-                    value={password}
-                    placeholder='Password'
-                    onChange={(e) => setPassword(e.target.value)} />
-                <div id="passwordHelpBlock" className="form-text">
-                    Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
-                </div>
-            </div><div className="row g-3 align-items-center">
-                <div className="col-auto">
-                </div>
+      <>  <div className="row g-3 align-items-center">
+          {message && <div className={`alert alert-${message == "Success!" ? 'success' : 'warning'}`} role="alert">
+            {message}
+          </div>}
+            </div>
+            <div className="row g-3 align-items-center mt-3">
+              <div className="input-group mb-3">
                 <select
                     id="accountType"
                     className="form-control"
@@ -82,13 +86,52 @@ const AddUser: React.FC<AddUserProps> = ({ show, handleClose, getUsers }) => {
                     <option value="viewer">Viewer</option>
                     <option value="admin">Admin</option>
                 </select>
-            </div></>
+              </div>
+            </div>
+            <div className="row g-3 align-items-center">
+            <div className="input-group mb-3">
+            <input
+              type="text"
+              id="username"
+              className="form-control"
+              value={username}
+              placeholder='Username'
+              onChange={(e) => setUsername(e.target.value)}
+              autoFocus
+            />
+            <span className="input-group-text">
+              <i className="bi bi-person"></i>
+            </span>
+            </div>
+          </div>
+            <div className="row g-3 align-items-center">
+            <div className="col-auto">
+            </div>
+            <div className="input-group mb-3">
+            <input
+              type={showPass ? 'password' : 'text'}
+              id="password"
+              placeholder='Password'
+              className="form-control"
+              value={password}
+              onChange={(e) => setPass(e.target.value)}
+            />
+            <span className="input-group-text show-pass" title='show password'
+              onClick={() => setShowPass(showPass ? false : true)}>
+              <i className={`bi ${showPass ? 'bi-eye-slash' : 'bi-eye'}`}></i>
+            </span>
+            </div>
+            <div id="passwordHelpBlock" className="form-text">
+                Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
+            </div>
+        </div>
+        </>
       </BootstrapModal.Body>
       <BootstrapModal.Footer>
         <Button variant="secondary" onClick={(e) => handleClear()}>
           Clear
         </Button>
-        <Button variant="primary" onClick={handleSignUp}>
+        <Button variant="primary" disabled={!continueSignUp} onClick={handleSignUp}>
           Save Changes
         </Button>
       </BootstrapModal.Footer>
