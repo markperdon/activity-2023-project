@@ -1,7 +1,9 @@
 .App {
   text-align: center;
 }
-
+#passwordHelpBlock {
+  font-size: x-small;
+}
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -41,7 +43,7 @@ code {
   color: #61dafb;
 }
 
-.registration-cont {
+.registration-cont, .login-cont {
   max-width: 500px;
   border: solid 1px #ccc;
   border-radius: 15px;

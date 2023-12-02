@@ -24,12 +24,12 @@ const SignUp: React.FC = () => {
       await onSignUp(username, password, accountType);
 
       // Save user information in localStorage
-      const user = {
-        username,
-        password,
-        accountType,
-      };
-      localStorage.setItem('user', JSON.stringify(user));
+      // const user = {
+      //   username,
+      //   password,
+      //   accountType,
+      // };
+      // localStorage.setItem('user', JSON.stringify(user));
 
       // Redirect or perform other actions upon successful sign-up
       navigate('/home');
@@ -41,8 +41,8 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <div className="container registration-cont">
-      <h2>Welcome!</h2>
+    <div className="container registration-cont App">
+      <h2>Register to Start.</h2>
       <div className="row g-3 align-items-center">
         <div className="col-auto">
           <label className="col-form-label" htmlFor="username">
@@ -98,6 +98,8 @@ const SignUp: React.FC = () => {
       <Button className="form-control btn btn-primary sign-up" onClick={handleSignUp}>
         Sign Up
       </Button>
+      Already have an account? <a href="/login">Log In here</a>
+
     </div>
   );
 };
