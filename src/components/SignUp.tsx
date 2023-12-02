@@ -60,7 +60,7 @@ const SignUp: React.FC = () => {
   return (
     <div className="container registration-cont App">
       <h2>Register to Start.</h2>
-      {message && <div className={`alert alert-${message == "Success!" ? 'success' : 'warning'}`} role="alert">
+      {message && <div className={`alert alert-${message === "Success!" ? 'success' : 'warning'}`} role="alert">
         {message}
       </div>}
       <div className="row g-3 align-items-center mt-3 mb-2">
