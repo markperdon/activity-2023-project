@@ -1,4 +1,4 @@
-// src/components/MyModal.js
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import BootstrapModal, { ModalProps } from 'react-bootstrap/Modal';
@@ -10,8 +10,8 @@ interface AddUserProps extends ModalProps {
     handleClose: () => void;
     getUsers: () => void;
   }
-const AddUser: React.FC<AddUserProps> = ({ show, handleClose, getUsers }) => {
-    const [username, setUsername] = useState('');
+const AddUser: React.FC<AddUserProps> = ({ show, handleClose, getUsers, branchId, userName, currentAccountType, userId }) => {
+    const [username, setUsername] = useState(branchId === 'null' ?  userName : '');
     const [password, setPassword] = useState('');
     const [branchID, setBranchID] = useState('');
     const [passHasNumber, setPassHasNumber] = useState(false);
@@ -19,9 +19,9 @@ const AddUser: React.FC<AddUserProps> = ({ show, handleClose, getUsers }) => {
     const [continueSignUp, setContinueSignUp] = useState(false);
     const [passLong, setPassLong] = useState(false);
     const [showPass, setShowPass] = useState(false);
-    const [accountType, setAccountType] = useState('');
+    const [accountType, setAccountType] = useState(currentAccountType);
     const [message, setMessage] = useState('');
-      const handleSignUp = async () => {
+    const handleSignUp = async () => {
       // Validate the form data
       if (!username || !password || !accountType) {
         setMessage('Please fill in all fields');
@@ -30,10 +30,14 @@ const AddUser: React.FC<AddUserProps> = ({ show, handleClose, getUsers }) => {
         },1500);
         return;
       }
-
       try {
         // Call the onSignUp function to register the user
-        await onSignUp(username, password, accountType);
+        if(branchId === 'null'){
+          await axios.put(`http://localhost:5000/updateUser/${userId}`, { branchID });
+          localStorage.setItem('branchId', branchID);
+        }else{
+          await onSignUp(username, password, accountType, branchID);
+        }
         handleClose();
         getUsers();
         handleClear();
@@ -64,7 +68,7 @@ const AddUser: React.FC<AddUserProps> = ({ show, handleClose, getUsers }) => {
    return (
     <BootstrapModal show={show} onHide={handleClose}>
       <BootstrapModal.Header closeButton>
-        <BootstrapModal.Title><i className='bi bi-person'></i> Add New User </BootstrapModal.Title>
+        <BootstrapModal.Title><i className='bi bi-person'></i> {branchId === 'null' ? 'Edit Your Info' : 'Add New User' } </BootstrapModal.Title>
       </BootstrapModal.Header>
       <BootstrapModal.Body>
       <>  <div className="row g-3 align-items-center">

@@ -20,7 +20,9 @@ const Home = () => {
   const token = localStorage.getItem('token');
   const username = localStorage.getItem('username');
   const accountType = localStorage.getItem('accountType');
-  const [showModal, setShowModal] = useState(false);
+  const branchId = localStorage.getItem('branchId');
+  const userId = localStorage.getItem('userId');
+  const [showModal, setShowModal] = useState(branchId === 'null');
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
   const [usersList, setUsersList] = useState<User[] | null>(null);
@@ -49,6 +51,9 @@ const Home = () => {
   const handleLogout = async () => {
     // Clear user information from localStorage
     localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    localStorage.removeItem('branchId');
+    localStorage.removeItem('accountType');
     // Redirect to the login page after logout
     navigate('/login');
   };
@@ -147,7 +152,15 @@ const Home = () => {
       ) : (
         <p>Redirecting to login...</p>
       )}
-    <AddUser show={showModal} handleClose={handleClose} getUsers={getUsers} />
+          <AddUser
+            show={showModal}
+            userName={username}
+            branchId={branchId}
+            currentAccountType={accountType}
+            handleClose={handleClose}
+            getUsers={getUsers}
+            userId={userId}
+            />
     </div>
   );
 };

@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const navigate = useNavigate();
-  const [userBranchId, setUserBranchId] = useState('');
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -13,22 +12,24 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       // Validate the form data
-      if (!userName || !password || !userBranchId) {
+      if (!userName || !password) {
         setMessage('Please fill in All fields');
         return;
       }
 
       // Make a request to log in the user
-      const response = await axios.post('http://localhost:5000/login', { userName, password, userBranchId });
+      const response = await axios.post('http://localhost:5000/login', { userName, password });
 
       // Extract the authentication token from the response
-      const { token, username, accounttype } = response.data;
+      const { token, username, accounttype, branchId, userId } = response.data;
 
       // Save the token in localStorage
       localStorage.setItem('token', token);
 
       localStorage.setItem('username', username);
       localStorage.setItem('accountType', accounttype);
+      localStorage.setItem('branchId', branchId);
+      localStorage.setItem('userId', userId);
 
       // Navigate to the home page after login
       navigate('/home');
@@ -44,18 +45,6 @@ const Login = () => {
       {message && <div className="alert alert-warning" role="alert">
         {message}
       </div>}
-      <div className="mb-3">
-        <label htmlFor="branch" className="form-label">
-          Branch ID:
-        </label>
-        <input
-          type="text"
-          id="branch"
-          className="form-control"
-          value={userBranchId}
-          onChange={(e) => setUserBranchId(e.target.value)}
-        />
-      </div>
       <div className="mb-3">
         <label htmlFor="username" className="form-label">
           Username:

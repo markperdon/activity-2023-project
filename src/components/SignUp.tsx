@@ -32,7 +32,7 @@ const SignUp: React.FC = () => {
     try {
       setContinueSignUp(false);
       // Call the onSignUp function to register the user
-      await onSignUp(username, password, accountType);
+      await onSignUp(username, password, accountType, '');
       setMessage("Success!")
       // Redirect or perform other actions upon successful sign-up
       setTimeout(() => {
