@@ -22,7 +22,7 @@ const Home = () => {
   const accountType = localStorage.getItem('accountType');
   const branchId = localStorage.getItem('branchId');
   const userId = localStorage.getItem('userId');
-  const [showModal, setShowModal] = useState(branchId === 'null');
+  const [showModal, setShowModal] = useState(branchId === '');
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
   const [usersList, setUsersList] = useState<User[] | null>(null);
