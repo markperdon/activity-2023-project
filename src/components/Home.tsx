@@ -10,6 +10,7 @@ import { titlizeText } from './shared/global';
 
 interface User {
   id: number;
+  branchId: string;
   username: string;
   accountType: string;
 }
@@ -40,6 +41,7 @@ const Home = () => {
     try {
       const response = await axios.get<User[]>('http://localhost:5000/users/all');
       setUsersList(response.data);
+      console.log(response.data)
     } catch (error) {
       console.error('Error fetching users');
     }
@@ -117,7 +119,7 @@ const Home = () => {
                   {usersList && usersList.map((user) => {
                     return (
                       <tr key={user.id}>
-                        <td>{user.id}</td>
+                        <td>{user.branchId}</td>
                         <td>{titlizeText(user.username)}</td>
                         <td>{titlizeText(user.username)}</td>
                         <td>{user.accountType}</td>

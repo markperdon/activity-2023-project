@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const navigate = useNavigate();
+  const [userBranchId, setUserBranchId] = useState('');
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -12,13 +13,13 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       // Validate the form data
-      if (!userName || !password) {
+      if (!userName || !password || !userBranchId) {
         setMessage('Please fill in All fields');
         return;
       }
 
       // Make a request to log in the user
-      const response = await axios.post('http://localhost:5000/login', { userName, password });
+      const response = await axios.post('http://localhost:5000/login', { userName, password, userBranchId });
 
       // Extract the authentication token from the response
       const { token, username, accounttype } = response.data;
@@ -43,6 +44,18 @@ const Login = () => {
       {message && <div className="alert alert-warning" role="alert">
         {message}
       </div>}
+      <div className="mb-3">
+        <label htmlFor="branch" className="form-label">
+          Branch ID:
+        </label>
+        <input
+          type="text"
+          id="branch"
+          className="form-control"
+          value={userBranchId}
+          onChange={(e) => setUserBranchId(e.target.value)}
+        />
+      </div>
       <div className="mb-3">
         <label htmlFor="username" className="form-label">
           Username:

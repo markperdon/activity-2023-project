@@ -94,9 +94,24 @@ const AddUser: React.FC<AddUserProps> = ({ show, handleClose, getUsers }) => {
               id="username"
               className="form-control"
               value={username}
-              placeholder='Username'
+              placeholder='Branch ID'
               onChange={(e) => setUsername(e.target.value)}
               autoFocus
+            />
+            <span className="input-group-text">
+              <i className="bi bi-building"></i>
+            </span>
+            </div>
+            </div>
+            <div className="row g-3 align-items-center">
+            <div className="input-group mb-3">
+            <input
+              type="text"
+              id="username"
+              className="form-control"
+              value={username}
+              placeholder='Username'
+              onChange={(e) => setUsername(e.target.value)}
             />
             <span className="input-group-text">
               <i className="bi bi-person"></i>
