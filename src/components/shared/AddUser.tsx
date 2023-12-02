@@ -11,7 +11,6 @@ interface AddUserProps extends ModalProps {
     getUsers: () => void;
   }
 const AddUser: React.FC<AddUserProps> = ({ show, handleClose, getUsers }) => {
-    // const [handleClear, sethandleClear] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [passHasNumber, setPassHasNumber] = useState(false);

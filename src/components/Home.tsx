@@ -96,9 +96,9 @@ const Home = () => {
           <div className="container-fluid mt-5">
 
             <div className="alert alert-light" role="alert">
-            <h2>Welcome, {titlizeText(username)}! <button type="button" className="btn btn-outline-success" disabled>{accountType}</button> </h2></div>
+            <h2>Welcome, {username && titlizeText(username)}! <button type="button" className="btn btn-outline-success" disabled>{accountType}</button> </h2></div>
             {accountType === 'admin' && <Button variant="primary btn-sm" onClick={handleShow}>
-                <i className="bi bi-person-add"></i>
+                <span className="bi bi-person-add"></span> &nbsp;
                 Add New User
             </Button> }
             <div className="table-responsive small tbl-users">
