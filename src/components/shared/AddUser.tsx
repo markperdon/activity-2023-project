@@ -67,7 +67,7 @@ const AddUser: React.FC<AddUserProps> = ({ show, handleClose, getUsers }) => {
       </BootstrapModal.Header>
       <BootstrapModal.Body>
       <>  <div className="row g-3 align-items-center">
-          {message && <div className={`alert alert-${message == "Success!" ? 'success' : 'warning'}`} role="alert">
+          {message && <div className={`alert alert-${message === "Success!" ? 'success' : 'warning'}`} role="alert">
             {message}
           </div>}
             </div>
