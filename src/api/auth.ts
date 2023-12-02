@@ -1,4 +1,3 @@
-// src/utils/authUtils.ts
 import axios from 'axios';
 
 export const onSignUp = async (username: string, password: string, accountType: string): Promise<void> => {
@@ -8,6 +7,5 @@ export const onSignUp = async (username: string, password: string, accountType: 
     console.log('User successfully registered!');
   } catch (error) {
     console.error('Error during registration:', error);
-    // You can handle errors here (e.g., show an error message to the user)
   }
 };

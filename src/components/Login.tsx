@@ -1,18 +1,19 @@
 // src/components/Login.js
-import React, { useState } from 'react';
 import axios from 'axios';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const navigate = useNavigate();
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
 
   const handleLogin = async () => {
     try {
       // Validate the form data
       if (!userName || !password) {
-        alert('Please fill in all fields');
+        setMessage('Please fill in All fields');
         return;
       }
 
@@ -31,13 +32,17 @@ const Login = () => {
       // Navigate to the home page after login
       navigate('/home');
     } catch (error) {
-      console.error('Error during login:', error);
+      setMessage("Invalid username or password");
+      // console.error('Error during login:', error);
     }
   };
 
   return (
     <div className="container login-cont ">
       <h2 className='App'>Login</h2>
+      {message && <div className="alert alert-warning" role="alert">
+        {message}
+      </div>}
       <div className="mb-3">
         <label htmlFor="username" className="form-label">
           Username:
@@ -62,10 +67,10 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
-      <button className="btn btn-primary" onClick={handleLogin}>
+      <button className="form-control btn btn-primary btn btn-primary" onClick={handleLogin}>
         Login
       </button>
-      Don't have an account? <a href="/signup">Register here</a>
+      <div className='reg-link'>Don't have an account? <a href="/signup">Register here</a></div>
     </div>
   );
 };

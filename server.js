@@ -3,7 +3,7 @@ const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
+const userHandler = require('./src/api/userHandler');
 const app = express();
 const PORT = 5000;
 const SECRET_KEY = '2023@project'; // Replace with a strong and unique secret key
@@ -70,28 +70,29 @@ app.post('/login', async (req, res) => {
   });
   stmt.finalize();
 });
-const getUsers = () => {
-  return new Promise((resolve, reject) => {
-    db.all('SELECT id, username, accountType FROM users', (err, rows) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(rows);
-      }
-    });
-  });
-};
-app.get('/users', async  (req, res) => {
-  // In a real app, you would likely retrieve the user data from a database
+
+app.get('/users/all', async  (req, res) => {
   try {
-    const users = await getUsers();
+    const users = await userHandler.getUsers();
+    console.log(users)
     res.json(users);
   } catch (error) {
     console.error('Error fetching users:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+// Delete user endpoint
+app.delete('/users/:userId', async (req, res) => {
+  const userId = parseInt(req.params.userId);
 
+  try {
+    await userHandler.deleteUser(userId);
+    res.json({ success: true, message: 'User deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

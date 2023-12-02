@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
-import Button from 'react-bootstrap/Button';
-import Modal from './shared/Modal';
 import axios from 'axios';
-import e from 'express';
+import $ from "jquery";
+import { useEffect, useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import { useNavigate } from 'react-router-dom';
+import AddUser from './shared/AddUser';
+import { titlizeText } from './shared/global';
 
 interface User {
   id: number;
@@ -37,19 +38,45 @@ const Home = () => {
   }, [navigate, token]);
   const getUsers = async () => {
     try {
-      const response = await axios.get<User[]>('http://localhost:5000/users');
+      const response = await axios.get<User[]>('http://localhost:5000/users/all');
       setUsersList(response.data);
     } catch (error) {
       console.error('Error fetching users');
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     // Clear user information from localStorage
     localStorage.removeItem('token');
     // Redirect to the login page after logout
     navigate('/login');
   };
+  const handleDelete = async (userId: number) => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/users/${userId}`);
+      const updatedUsers = usersList && usersList.filter((user) => user.id !== userId);
+      if(response.data.success){
+        setUsersList(updatedUsers);
+      }
+      console.log(response.data)
+    } catch (error) {
+      console.error('Error fetching users');
+    }
+  };
+  const handleConfirm = (userId: number) => {
+    console.log(userId, $('#confirm'+userId))
+    $('#confirm'+userId).show();
+    $('#back'+userId).show();
+    $('#lbl-del'+userId).show();
+    $('#del'+userId).hide();
+  }
+  const handleBack = (userId: number) => {
+    console.log(userId, $('#confirm'+userId))
+    $('#confirm'+userId).hide(100);
+    $('#back'+userId).hide(100);
+    $('#lbl-del'+userId).hide(100);
+    $('#del'+userId).show(100);
+  }
 
   return (
     <div>
@@ -68,21 +95,22 @@ const Home = () => {
           </Navbar>
           <div className="container-fluid mt-5">
 
-            <div className="alert alert-secondary" role="alert">
-            <h2>Welcome, {username}! <button type="button" className="btn btn-outline-success" disabled>{accountType}</button> </h2></div>
-            <Button variant="primary btn-sm" onClick={handleShow}>
+            <div className="alert alert-light" role="alert">
+            <h2>Welcome, {titlizeText(username)}! <button type="button" className="btn btn-outline-success" disabled>{accountType}</button> </h2></div>
+            {accountType === 'admin' && <Button variant="primary btn-sm" onClick={handleShow}>
                 <i className="bi bi-person-add"></i>
                 Add New User
-            </Button>
+            </Button> }
             <div className="table-responsive small tbl-users">
               <table className="table table-striped table-sm">
                 <thead>
                   <tr>
-                    <th scope="col">Branch ID,</th>
+                    <th scope="col">Branch ID</th>
                     <th scope="col">Username</th>
                     <th scope="col">Name</th>
                     <th scope="col">Position</th>
                     {accountType === 'admin' && <th scope="col">Action</th>}
+                    <th scope="col"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -90,10 +118,23 @@ const Home = () => {
                     return (
                       <tr key={user.id}>
                         <td>{user.id}</td>
-                        <td>{user.username}</td>
-                        <td>{user.username}</td>
+                        <td>{titlizeText(user.username)}</td>
+                        <td>{titlizeText(user.username)}</td>
                         <td>{user.accountType}</td>
-                        {accountType === 'admin' && <td><Button className='btn btn-danger'><i className='bi bi-person-dash'/></Button></td>}
+                        {accountType === 'admin'
+                        && <td><span className='confirm-btn' id={"lbl-del" + user.id}>Delete?</span>
+                          <Button className='btn btn-danger' id={"del" + user.id} onClick={() => handleConfirm(user.id)}>
+                            <i className='bi bi-person-dash'/>
+                          </Button>
+
+                          </td>}
+                          <td><Button className='btn btn-warning confirm-btn' id={"confirm" + user.id} onClick={() => handleDelete(user.id)}>
+                            <i className='bi bi-check-circle-fill'/> Yes
+                          </Button> &nbsp;
+                          <Button className='btn btn-success back-btn' id={"back" + user.id} onClick={() => handleBack(user.id)}>
+                            <i className='bi bi-arrow-counterclockwise'/> No
+                          </Button></td>
+
                       </tr>
                     )
                   })}
@@ -105,7 +146,7 @@ const Home = () => {
       ) : (
         <p>Redirecting to login...</p>
       )}
-    <Modal show={showModal} handleClose={handleClose} />
+    <AddUser show={showModal} handleClose={handleClose} getUsers={getUsers} />
     </div>
   );
 };
