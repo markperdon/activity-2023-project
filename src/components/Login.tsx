@@ -8,6 +8,7 @@ const Login = () => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [showPass, setShowPass] = useState(false);
 
   const handleLogin = async () => {
     try {
@@ -67,18 +68,23 @@ const Login = () => {
           onChange={(e) => setUserName(e.target.value)}
         />
       </div>
-      <div className="mb-3">
         <label htmlFor="password" className="form-label">
           Password:
         </label>
+      <div className="input-group mb-3">
         <input
-          type="password"
+          type={!showPass ? 'password' : 'text'}
           id="password"
           className="form-control"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        <span className="input-group-text show-pass" title='show password'
+          onClick={() => setShowPass(showPass ? false : true)}>
+          <i className={`bi ${!showPass ? 'bi-eye-slash' : 'bi-eye'}`}></i>
+        </span>
       </div>
+
       <button className="form-control btn btn-primary btn btn-primary" onClick={handleLogin}>
         Login
       </button>

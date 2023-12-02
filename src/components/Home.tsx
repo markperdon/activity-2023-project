@@ -41,7 +41,6 @@ const Home = () => {
     try {
       const response = await axios.get<User[]>('http://localhost:5000/users/all');
       setUsersList(response.data);
-      console.log(response.data)
     } catch (error) {
       console.error('Error fetching users');
     }

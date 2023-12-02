@@ -106,7 +106,7 @@ const SignUp: React.FC = () => {
         </div>
         <div className="input-group mb-3">
         <input
-          type={showPass ? 'password' : 'text'}
+          type={!showPass ? 'password' : 'text'}
           id="password"
           className="form-control"
           value={password}
@@ -114,7 +114,7 @@ const SignUp: React.FC = () => {
         />
         <span className="input-group-text show-pass" title='show password'
           onClick={() => setShowPass(showPass ? false : true)}>
-          <i className={`bi ${showPass ? 'bi-eye-slash' : 'bi-eye'}`}></i>
+          <i className={`bi ${!showPass ? 'bi-eye-slash' : 'bi-eye'}`}></i>
         </span>
         </div>
       </div>
