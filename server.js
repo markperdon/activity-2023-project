@@ -74,7 +74,6 @@ app.post('/login', async (req, res) => {
 app.get('/users/all', async  (req, res) => {
   try {
     const users = await userHandler.getUsers();
-    console.log(users)
     res.json(users);
   } catch (error) {
     console.error('Error fetching users:', error);

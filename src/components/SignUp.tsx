@@ -1,10 +1,10 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { hasNumber, hasSymbol, isPassLong } from './shared/global';
 import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import { onSignUp } from '../api/auth';
 import '../css/App.css';
+import { hasNumber, hasSymbol, isPassLong } from './shared/global';
 
 
 const SignUp: React.FC = () => {
@@ -63,7 +63,7 @@ const SignUp: React.FC = () => {
       {message && <div className={`alert alert-${message == "Success!" ? 'success' : 'warning'}`} role="alert">
         {message}
       </div>}
-      <div className="row g-3 align-items-center">
+      <div className="row g-3 align-items-center mt-3 mb-2">
       <select
         id="accountType"
         className="form-control"
